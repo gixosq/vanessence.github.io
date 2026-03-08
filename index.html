@@ -207,29 +207,30 @@
                 <p style="font-size: 1.2rem;">${currentWinner.desc}</p>
             `;
 
-            // Wielkie konfetti na koniec
-            const duration = 3 * 1000;
+            // --- ZAPIS DO GOOGLE SHEETS ---
+            const scriptURL = "https://script.google.com/macros/s/AKfycbw0W6Xbs4N4loS5WtUHz8UkEUz5uCIyhLhY6RTUx1Oq6fU-a7frTkQn5iiXUD1DBPU/exec"; 
+
+            fetch(scriptURL, {
+                method: 'POST',
+                mode: 'no-cors', // Ważne dla Google Apps Script
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify({
+                    prezent: currentWinner.title
+                })
+            }).then(() => {
+                console.log("Wynik zapisany w Google Sheets!");
+            }).catch(error => {
+                console.error("Błąd zapisu:", error);
+            });
+            // -------------------------------
+
+            // Efekt konfetti (ten sam co wcześniej)
+            const duration = 4 * 1000;
             const end = Date.now() + duration;
-
             (function frame() {
-                confetti({
-                    particleCount: 5,
-                    angle: 60,
-                    spread: 55,
-                    origin: { x: 0 },
-                    colors: ['#bc6c25', '#d4a373']
-                });
-                confetti({
-                    particleCount: 5,
-                    angle: 120,
-                    spread: 55,
-                    origin: { x: 1 },
-                    colors: ['#bc6c25', '#d4a373']
-                });
-
-                if (Date.now() < end) {
-                    requestAnimationFrame(frame);
-                }
+                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#bc6c25', '#d4a373'] });
+                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#bc6c25', '#d4a373'] });
+                if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
 
