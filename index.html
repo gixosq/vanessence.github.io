@@ -1,0 +1,257 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Kuponownik dla Ciebie</title>
+    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <style>
+        :root {
+            --primary: #d4a373; /* Złoty akcent */
+            --bg-color: #fefae0; /* Delikatny beż */
+            --card-bg: rgba(255, 255, 255, 0.6);
+            --pink-soft: #faedcd;
+            --text-dark: #606c38;
+            --accent-pink: #e09f7d;
+        }
+
+        * {
+            box-sizing: border-box;
+            margin: 0;
+            padding: 0;
+        }
+
+        body {
+            font-family: 'Montserrat', sans-serif;
+            background: linear-gradient(135deg, #fefae0 0%, #faedcd 100%);
+            color: var(--text-dark);
+            min-height: 100vh;
+            padding: 40px 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        header {
+            text-align: center;
+            margin-bottom: 50px;
+            max-width: 700px;
+        }
+
+        h1 {
+            font-family: 'Playfair Display', serif;
+            font-size: 2.8rem;
+            color: #bc6c25;
+            margin-bottom: 15px;
+        }
+
+        p.subtitle {
+            font-size: 1.1rem;
+            line-height: 1.6;
+            font-weight: 300;
+            font-style: italic;
+        }
+
+        /* Siatka kuponów */
+        .coupon-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
+            gap: 25px;
+            width: 100%;
+            max-width: 1100px;
+        }
+
+        /* Karta kuponu - Glassmorphism */
+        .coupon-card {
+            background: var(--card-bg);
+            backdrop-filter: blur(10px);
+            -webkit-backdrop-filter: blur(10px);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            border-radius: 20px;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+            transition: transform 0.3s ease, box-shadow 0.3s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            overflow: hidden;
+        }
+
+        .coupon-card:hover:not(.used) {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 30px rgba(0,0,0,0.05);
+        }
+
+        .icon {
+            font-size: 3rem;
+            margin-bottom: 15px;
+        }
+
+        h3 {
+            font-family: 'Playfair Display', serif;
+            margin-bottom: 10px;
+            font-size: 1.4rem;
+        }
+
+        .description {
+            font-size: 0.9rem;
+            margin-bottom: 20px;
+            color: #555;
+        }
+
+        .btn-redeem {
+            background-color: #dda15e;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: 600;
+            transition: background 0.3s ease;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            font-size: 0.8rem;
+        }
+
+        .btn-redeem:hover {
+            background-color: #bc6c25;
+        }
+
+        /* Stan zrealizowany */
+        .coupon-card.used {
+            opacity: 0.6;
+            filter: grayscale(0.5);
+            pointer-events: none;
+        }
+
+        .used-stamp {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%) rotate(-15deg);
+            border: 3px solid #e63946;
+            color: #e63946;
+            padding: 5px 15px;
+            font-weight: 900;
+            font-size: 1.5rem;
+            border-radius: 10px;
+            text-transform: uppercase;
+            display: none;
+            z-index: 10;
+        }
+
+        .coupon-card.used .used-stamp {
+            display: block;
+        }
+
+        /* Modal */
+        #modal-overlay {
+            position: fixed;
+            top: 0; left: 0; width: 100%; height: 100%;
+            background: rgba(0,0,0,0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+        }
+
+        .modal-content {
+            background: white;
+            padding: 40px;
+            border-radius: 20px;
+            text-align: center;
+            max-width: 400px;
+            animation: popIn 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
+        }
+
+        @keyframes popIn {
+            from { transform: scale(0.5); opacity: 0; }
+            to { transform: scale(1); opacity: 1; }
+        }
+
+        .modal-content h2 { margin-bottom: 15px; font-family: 'Playfair Display', serif; }
+        .modal-close {
+            margin-top: 20px;
+            background: #606c38;
+            color: white;
+            border: none;
+            padding: 10px 20px;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <h1>Kupony dla Vanesski</h1>
+        <p class="subtitle">Z okazji Dnia Kobiet przygotowałem coś więcej niż kwiaty. Każdy z tych kuponów możesz zrealizować, kiedy tylko zechcesz. Ty wybierasz moment!</p>
+    </header>
+
+    <div class="coupon-grid" id="grid">
+        </div>
+
+    <div id="modal-overlay">
+        <div class="modal-content">
+            <h2>✨ Doskonały wybór!</h2>
+            <p id="modal-text">Obiecuję zająć się tym najlepiej jak potrafię!</p>
+            <button class="modal-close" onclick="closeModal()">Wracam do reszty</button>
+        </div>
+    </div>
+
+    <script>
+        const coupons = [
+            { id: 1, title: "Masaż stóp", icon: "💆‍♀️", desc: "30 minut relaksu po ciężkim dniu przy Twojej ulubionej muzyce." },
+            { id: 2, title: "Domowa Kolacja", icon: "🍝", desc: "Twoje ulubione danie przygotowane przeze mnie, świece i zero sprzątania z Twojej strony." },
+            { id: 3, title: "Weekend Wolności", icon: "🧹", desc: "Przejmuję wszystkie domowe obowiązki przez cały weekend. Ty odpoczywasz." },
+            { id: 4, title: "Wieczór w Kinie", icon: "🍿", desc: "Wybierasz dowolny film, nawet jeśli to najdłuższy romans na świecie." },
+            { id: 5, title: "Dzień na TAK", icon: "✅", desc: "Przez całe 24 godziny nie mogę Ci odmówić (w granicach rozsądku!)." },
+            { id: 6, title: "Spacer i Deser", icon: "🍰", desc: "Wyjście do Twojej ulubionej kawiarni na to pyszne ciastko, o którym marzysz." }
+        ];
+
+        function createCoupons() {
+            const grid = document.getElementById('grid');
+            coupons.forEach(coupon => {
+                const card = document.createElement('div');
+                card.className = 'coupon-card';
+                card.id = `coupon-${coupon.id}`;
+                card.innerHTML = `
+                    <div class="used-stamp">Użyte</div>
+                    <div>
+                        <div class="icon">${coupon.icon}</div>
+                        <h3>${coupon.title}</h3>
+                        <p class="description">${coupon.desc}</p>
+                    </div>
+                    <button class="btn-redeem" onclick="redeem(${coupon.id})">Zrealizuj kupon</button>
+                `;
+                grid.appendChild(card);
+            });
+        }
+
+        function redeem(id) {
+            const card = document.getElementById(`coupon-${id}`);
+            card.classList.add('used');
+
+            // Confetti effect
+            confetti({
+                particleCount: 150,
+                spread: 70,
+                origin: { y: 0.6 },
+                colors: ['#dda15e', '#bc6c25', '#faedcd']
+            });
+
+            // Show modal
+            document.getElementById('modal-overlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modal-overlay').style.display = 'none';
+        }
+
+        // Inicjalizacja
+        createCoupons();
+    </script>
+</body>
+</html>
