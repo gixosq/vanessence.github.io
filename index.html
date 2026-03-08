@@ -131,7 +131,6 @@
     </div>
 
     <script>
-        // Twoja lista kuponów
         const allCoupons = [
             { title: "Masaż stóp", icon: "💆‍♀️", desc: "30 minut relaksu przy Twojej ulubionej muzyce." },
             { title: "Domowa Kolacja", icon: "🍝", desc: "Twoje ulubione danie, świece i zero Twojego sprzątania." },
@@ -140,29 +139,37 @@
             { title: "Dzień na TAK", icon: "✅", desc: "Przez całe 24 godziny nie mogę Ci odmówić niczego!" },
             { title: "Spacer i Deser", icon: "🍰", desc: "Wyjście do ulubionej kawiarni na największe ciastko w menu." }
         ];
-
-        // Tasowanie listy (poza pierwszymi dwoma dla stabilności gry)
-        let pool = [...allCoupons].sort(() => Math.random() - 0.5);
         
+        let pool = [...allCoupons].sort(() => Math.random() - 0.5);
         let currentWinner = pool[0];
         let nextIndex = 1;
         let totalRounds = allCoupons.length - 1;
         let currentRound = 1;
-
+        
+        function init() {
+            // Sprawdź, czy już grała
+            const savedWinner = localStorage.getItem('celebratedWinner');
+            if (savedWinner) {
+                const winnerData = allCoupons.find(c => c.title === savedWinner);
+                showWinner(winnerData, false); // Pokaż ekran końcowy bez ponownego wysyłania do Google
+            } else {
+                updateUI();
+            }
+        }
+        
         function updateUI() {
             if (currentRound > totalRounds) {
-                showWinner();
+                showWinner(currentWinner, true); // Pierwsza wygrana - wyślij do Google
                 return;
             }
-
+        
             document.getElementById('progress').innerText = `Pojedynek ${currentRound} / ${totalRounds}`;
-            
             const nextChallenger = pool[nextIndex];
-
+        
             renderCard('card-left', currentWinner);
             renderCard('card-right', nextChallenger);
         }
-
+        
         function renderCard(elementId, data) {
             const el = document.getElementById(elementId);
             el.style.opacity = 0;
@@ -175,56 +182,48 @@
                 el.style.opacity = 1;
             }, 200);
         }
-
+        
         function select(side) {
-            // Jeśli wybrano prawą kartę (challenger), staje się ona nowym currentWinner
-            if (side === 1) {
-                currentWinner = pool[nextIndex];
-            }
-            
+            if (side === 1) currentWinner = pool[nextIndex];
             nextIndex++;
             currentRound++;
             
-            // Efekt konfetti przy każdym wyborze (mniejszy)
             confetti({
                 particleCount: 40,
                 spread: 50,
                 origin: { y: 0.8 },
                 colors: ['#bc6c25', '#fefae0']
             });
-
+        
             updateUI();
         }
-
-        function showWinner() {
+        
+        function showWinner(winner, shouldSubmit) {
             document.getElementById('game-ui').style.display = 'none';
             const winnerUI = document.getElementById('winner-ui');
             winnerUI.style.display = 'block';
             
             document.getElementById('final-card-container').innerHTML = `
-                <div class="icon" style="font-size: 6rem;">${currentWinner.icon}</div>
-                <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px;">${currentWinner.title}</h2>
-                <p style="font-size: 1.2rem;">${currentWinner.desc}</p>
+                <div class="icon" style="font-size: 6rem;">${winner.icon}</div>
+                <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px;">${winner.title}</h2>
+                <p style="font-size: 1.2rem;">${winner.desc}</p>
             `;
-
-            // --- ZAPIS DO GOOGLE SHEETS ---
-            const scriptURL = "https://script.google.com/macros/s/AKfycbw0W6Xbs4N4loS5WtUHz8UkEUz5uCIyhLhY6RTUx1Oq6fU-a7frTkQn5iiXUD1DBPU/exec"; 
-
-            fetch(scriptURL, {
-                method: 'POST',
-                mode: 'no-cors', // Ważne dla Google Apps Script
-                headers: { 'Content-Type': 'application/json' },
-                body: JSON.stringify({
-                    prezent: currentWinner.title
-                })
-            }).then(() => {
-                console.log("Wynik zapisany w Google Sheets!");
-            }).catch(error => {
-                console.error("Błąd zapisu:", error);
-            });
-            // -------------------------------
-
-            // Efekt konfetti (ten sam co wcześniej)
+        
+            if (shouldSubmit) {
+                // Zapisz w przeglądarce, żeby nie mogła zagrać drugi raz
+                localStorage.setItem('celebratedWinner', winner.title);
+        
+                // Wyślij do Google Sheets (pamiętaj o podpięciu URL!)
+                const scriptURL = "https://script.google.com/macros/s/AKfycbzpMsKWbwTRj8ORU_zy74_gbvRk-0sobOv6CEhz8cQ/dev"; 
+                fetch(scriptURL, {
+                    method: 'POST',
+                    mode: 'no-cors',
+                    headers: { 'Content-Type': 'application/json' },
+                    body: JSON.stringify({ prezent: winner.title })
+                });
+            }
+        
+            // Wielkie konfetti
             const duration = 4 * 1000;
             const end = Date.now() + duration;
             (function frame() {
@@ -233,9 +232,9 @@
                 if (Date.now() < end) requestAnimationFrame(frame);
             }());
         }
-
+        
         // Start gry
-        updateUI();
+        init();
     </script>
 </body>
 </html>
