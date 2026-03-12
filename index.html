@@ -9,15 +9,13 @@
         :root {
             --bg-color: #0f0f0f;
             --text-color: #ffffff;
-            --accent-color: #c5a059; /* Zgaszone złoto */
+            --accent-color: #c5a059; 
             --secondary-bg: #1a1a1a;
             --transition: all 0.3s ease;
         }
 
         * {
-            margin: 0;
-            padding: 0;
-            box-sizing: border-box;
+            margin: 0; padding: 0; box-sizing: border-box;
             font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
         }
 
@@ -25,12 +23,11 @@
             background-color: var(--bg-color);
             color: var(--text-color);
             line-height: 1.6;
-            overflow-x: hidden;
         }
 
         /* Navigation */
         nav {
-            padding: 2rem;
+            padding: 1.5rem 5%;
             display: flex;
             justify-content: space-between;
             align-items: center;
@@ -40,12 +37,7 @@
             background: linear-gradient(to bottom, rgba(15,15,15,0.9), transparent);
         }
 
-        .logo {
-            font-weight: 700;
-            letter-spacing: 2px;
-            text-transform: uppercase;
-            font-size: 1.2rem;
-        }
+        .logo { font-weight: 700; letter-spacing: 2px; text-transform: uppercase; }
 
         /* Hero Section */
         header {
@@ -54,143 +46,102 @@
             align-items: center;
             justify-content: center;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('miejsce-na-twoje-zdjecie.jpg'); /* Tu dodasz Headshot */
+            background: linear-gradient(rgba(0,0,0,0.6), rgba(0,0,0,0.6)), url('headshot-main.jpg'); 
             background-size: cover;
             background-position: center;
         }
 
         .hero-content h1 {
-            font-size: clamp(3rem, 8vw, 5rem);
+            font-size: clamp(2.5rem, 8vw, 4.5rem);
             font-weight: 200;
-            margin-bottom: 1rem;
             text-transform: uppercase;
+            margin-bottom: 1rem;
         }
 
         .tagline {
-            font-size: 1.1rem;
+            font-size: 1rem;
             letter-spacing: 3px;
             color: var(--accent-color);
-            margin-bottom: 2rem;
-        }
-
-        /* Buttons */
-        .btn {
-            padding: 1rem 2.5rem;
-            border: 1px solid var(--text-color);
-            color: var(--text-color);
-            text-decoration: none;
+            margin-bottom: 2.5rem;
             text-transform: uppercase;
-            letter-spacing: 2px;
-            font-size: 0.8rem;
-            transition: var(--transition);
-            display: inline-block;
         }
 
-        .btn:hover {
-            background-color: var(--text-color);
-            color: var(--bg-color);
-        }
-
-        .btn-gold {
-            border-color: var(--accent-color);
-            color: var(--accent-color);
-        }
-
-        /* Section Styling */
-        section {
-            padding: 100px 10%;
-        }
-
+        /* Sections */
+        section { padding: 80px 10%; }
         h2 {
-            font-size: 2rem;
-            margin-bottom: 3rem;
+            font-size: 1.8rem;
+            margin-bottom: 2.5rem;
             text-transform: uppercase;
-            letter-spacing: 4px;
+            letter-spacing: 3px;
             border-bottom: 1px solid #333;
             padding-bottom: 10px;
         }
 
-        /* Showreel */
-        .video-container {
-            position: relative;
-            padding-bottom: 56.25%;
-            height: 0;
-            margin-bottom: 2rem;
-        }
-
-        .video-container iframe {
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            border: none;
-        }
-
-        /* Experience Grid */
+        /* Grid System */
         .grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            grid-template-columns: repeat(auto-fit, minmax(280px, 1fr));
             gap: 2rem;
         }
 
         .card {
             background: var(--secondary-bg);
-            padding: 2rem;
-            border-radius: 4px;
+            padding: 2.5rem;
+            border-radius: 2px;
+            transition: var(--transition);
         }
 
-        .card h3 {
-            color: var(--accent-color);
-            margin-bottom: 1rem;
+        .card:hover { transform: translateY(-5px); }
+        .card h3 { color: var(--accent-color); margin-bottom: 1.2rem; text-transform: uppercase; font-size: 1.1rem; }
+        .card ul { list-style: none; }
+        .card li { margin-bottom: 0.6rem; font-size: 0.95rem; opacity: 0.9; }
+
+        /* Buttons */
+        .btn {
+            padding: 0.8rem 2rem;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.75rem;
+            transition: var(--transition);
+            display: inline-block;
+            cursor: pointer;
         }
 
-        .card ul {
-            list-style: none;
-        }
+        .btn:hover { background: var(--text-color); color: var(--bg-color); }
+        .btn-gold { border-color: var(--accent-color); color: var(--accent-color); }
+        .btn-gold:hover { background: var(--accent-color); color: var(--bg-color); }
 
-        .card li {
-            margin-bottom: 0.5rem;
-            opacity: 0.8;
-        }
-
-        /* Gallery Placeholder */
+        /* Gallery */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
-            gap: 1rem;
+            gap: 15px;
         }
-
-        .photo-placeholder {
+        .photo {
             aspect-ratio: 2/3;
             background: #222;
             display: flex;
             align-items: center;
             justify-content: center;
-            color: #444;
+            font-size: 0.8rem;
+            color: #555;
+            background-size: cover;
+            background-position: center;
         }
+
+        /* CV Table */
+        .cv-table { width: 100%; border-collapse: collapse; margin-top: 1rem; }
+        .cv-table td { padding: 10px 0; border-bottom: 1px solid #222; font-size: 0.9rem; }
+        .cv-table td:first-child { color: var(--accent-color); width: 35%; text-transform: uppercase; font-size: 0.8rem; }
 
         /* Footer */
-        footer {
-            padding: 50px 10%;
-            background: #050505;
-            text-align: center;
-        }
-
-        .social-links {
-            margin-bottom: 2rem;
-        }
-
-        .social-links a {
-            color: var(--text-color);
-            font-size: 1.5rem;
-            margin: 0 15px;
-            transition: var(--transition);
-        }
-
-        .social-links a:hover {
-            color: var(--accent-color);
-        }
+        footer { padding: 60px 10%; background: #050505; text-align: center; }
+        .social-links { margin: 2rem 0; }
+        .social-links a { color: var(--text-color); font-size: 1.5rem; margin: 0 15px; transition: var(--transition); }
+        .social-links a:hover { color: var(--accent-color); }
 
         @media (max-width: 768px) {
             .gallery-grid { grid-template-columns: 1fr; }
@@ -202,50 +153,53 @@
 
     <nav>
         <div class="logo">Vanessa Gazda</div>
-        <div><a href="#kontakt" class="btn" style="padding: 0.5rem 1rem; font-size: 0.7rem;">Kontakt</a></div>
+        <a href="https://www.instagram.com/vanessence_act" target="_blank" class="social-links" style="margin:0"><i class="fab fa-instagram"></i></a>
     </nav>
 
     <header>
         <div class="hero-content">
             <h1>Vanessa Gazda</h1>
-            <p class="tagline">Aktorka | Absolwentka AT w Krakowie | Taniec towarzyski</p>
-            <a href="https://www.instagram.com/p/C-XCXncuBZg/" target="_blank" class="btn">Zobacz Showreel</a>
+            <p class="tagline">Aktorka | Lektorka | Coach</p>
+            <a href="https://www.youtube.com/watch?v=v20pCBzkk54" target="_blank" class="btn">Zobacz Showreel</a>
         </div>
     </header>
 
-    <section id="showreel">
-        <h2>Showreel</h2>
-        <div class="video-container">
-            <iframe src="https://www.youtube.com/embed/Twoje_ID_Wideo" allowfullscreen></iframe>
-        </div>
+    <section id="o-mnie">
+        <h2>O mnie</h2>
+        <p style="max-width: 800px; font-size: 1.1rem; font-weight: 300; line-height: 1.8;">
+            Polska aktorka teatralna i filmowa, absolwentka <strong>Akademii Sztuk Teatralnych w Krakowie (2022)</strong>. 
+            Związana z Teatrem Małego Widza w Warszawie. Specjalizuje się w tańcu towarzyskim (klasa A i B), 
+            łącząc precyzję ruchu z ekspresją dramatyczną.
+        </p>
     </section>
 
-    <section id="doświadczenie">
+    <section id="doswiadczenie" style="background: #141414;">
         <div class="grid">
             <div class="card">
                 <h3><i class="fas fa-film"></i> Aktorka</h3>
                 <ul>
-                    <li><strong>Film 1</strong> (Tytuł wkrótce)</li>
-                    <li><strong>Film 2</strong> (Tytuł wkrótce)</li>
-                    <li><strong>Film 3</strong> (Tytuł wkrótce)</li>
+                    <li><strong>Idź pod prąd</strong> (2024)</li>
+                    <li><strong>Chester</strong> (Krótki metraż)</li>
+                    <li><strong>Serial:</strong> Przyjaciółki, Osiecka, Zawsze warto, Komisarz Alex</li>
+                    <li><strong>Teatr:</strong> Dzika Kaczka (Teatr im. Żeromskiego), Teatr Polski, Teatr Żydowski</li>
                 </ul>
             </div>
 
             <div class="card">
                 <h3><i class="fas fa-microphone"></i> Lektorka</h3>
-                <p>Audiodeskrypcja:</p>
+                <p style="font-size: 0.8rem; margin-bottom: 10px; color: #888;">Audiodeskrypcja:</p>
                 <ul>
                     <li>Wiedźmin</li>
                     <li>Wzgórze Psów</li>
-                    <li>Modlitwa w drodze</li>
+                    <li>Aplikacja "Modlitwa w drodze"</li>
                 </ul>
             </div>
 
             <div class="card">
-                <h3><i class="fas fa-heart"></i> Coach</h3>
+                <h3><i class="fas fa-seedling"></i> Coach</h3>
                 <p>Prowadzę zajęcia grupowe dla kobiet oraz sesje 1:1 online dla osób w procesie zmiany.</p>
                 <br>
-                <a href="https://docs.google.com/forms/d/e/1FAIpQLSekvdTMZGWFfziKp1s-eT8iVXVLiUOT6yymQ-jV8TxnrlpAZg/viewform" class="btn btn-gold" style="font-size: 0.7rem; padding: 0.6rem 1rem;">Zapisz się na sesję</a>
+                <a href="mailto:vanessa.gazda7@gmail.com" class="btn btn-gold" style="font-size: 0.65rem;">Zapisz się na sesję</a>
             </div>
         </div>
     </section>
@@ -253,51 +207,52 @@
     <section id="galeria">
         <h2>Galeria</h2>
         <div class="gallery-grid">
-            <div class="photo-placeholder">Headshot 1</div>
-            <div class="photo-placeholder">Sylwetka</div>
-            <div class="photo-placeholder">Still filmowy</div>
+            <div class="photo">Headshot 2024</div>
+            <div class="photo">Kadry filmowe</div>
+            <div class="photo">Taniec / Sylwetka</div>
+        </div>
+        <div style="text-align: center; margin-top: 2rem;">
+            <a href="https://www.instagram.com/vanessence_act" target="_blank" style="color: var(--accent-color); text-decoration: none; font-size: 0.8rem; letter-spacing: 1px;">Więcej na Instagramie &rarr;</a>
         </div>
     </section>
 
-    <section id="cv" style="background-color: var(--secondary-bg);">
-        <h2>Resume</h2>
+    <section id="dane-techniczne" style="background: var(--secondary-bg);">
         <div class="grid">
             <div>
-                <h3>Dane fizyczne</h3>
-                <p>Wzrost: --- cm<br>Oczy: ---<br>Włosy: ---</p>
+                <h2>Metryczka</h2>
+                <table class="cv-table">
+                    <tr><td>Rok urodzenia</td><td>1996</td></tr>
+                    <tr><td>Wzrost</td><td>164 cm</td></tr>
+                    <tr><td>Wykształcenie</td><td>AST Kraków (2022)</td></tr>
+                    <tr><td>Języki</td><td>angielski, francuski</td></tr>
+                </table>
             </div>
             <div>
-                <h3>Umiejętności</h3>
-                <p>Taniec towarzyski, Szermierka, Prawo jazdy, Języki (angielski - poziom...)</p>
+                <h2>Umiejętności</h2>
+                <table class="cv-table">
+                    <tr><td>Taniec</td><td>Towarzyski (Latynoamerykański A, Standard B)</td></tr>
+                    <tr><td>Sport</td><td>Boks, Jazda konna, Narty</td></tr>
+                    <tr><td>Inne</td><td>Śpiew, Prawo jazdy kat. B</td></tr>
+                </table>
             </div>
         </div>
-        <br><br>
-        <center><a href="#" class="btn"><i class="fas fa-download"></i> Pobierz CV (PDF)</a></center>
+        <div style="text-align: center; margin-top: 4rem;">
+            <a href="https://two4talents.com/vanessa-gazda/" target="_blank" class="btn"><i class="fas fa-external-link-alt"></i> Profil Agencji two4talents</a>
+        </div>
     </section>
 
     <footer id="kontakt">
         <h2>Kontakt</h2>
-        <p>Agent: [Dane agenta zostaną dodane]</p>
-        <p>Email: <a href="mailto:vanessa.gazda7@gmail.com" style="color: var(--accent-color); text-decoration: none;">vanessa.gazda7@gmail.com</a></p>
-        <br><br>
+        <p>Vanessa Gazda</p>
+        <p><a href="mailto:vanessa.gazda7@gmail.com" style="color: var(--accent-color); text-decoration: none;">vanessa.gazda7@gmail.com</a></p>
+        <br>
+        <p style="font-size: 0.8rem; color: #666;">Represented by: <strong>two4talents</strong></p>
+        
         <div class="social-links">
             <a href="https://www.instagram.com/vanessence_act" target="_blank"><i class="fab fa-instagram"></i></a>
-            <a href="#"><i class="fab fa-vimeo-v"></i></a>
-            <a href="#"><i class="fab fa-linkedin-in"></i></a>
         </div>
-        <p style="font-size: 0.7rem; opacity: 0.5;">&copy; 2024 Vanessa Gazda. All rights reserved.</p>
+        <p style="font-size: 0.7rem; opacity: 0.4;">&copy; 2026 Vanessa Gazda. Minimalist Portfolio.</p>
     </footer>
 
-    <script>
-        // Prosty efekt scrolla dla nawigacji
-        window.addEventListener('scroll', function() {
-            const nav = document.querySelector('nav');
-            if (window.scrollY > 50) {
-                nav.style.background = 'rgba(15, 15, 15, 0.95)';
-            } else {
-                nav.style.background = 'linear-gradient(to bottom, rgba(15,15,15,0.9), transparent)';
-            }
-        });
-    </script>
 </body>
 </html>
