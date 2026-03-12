@@ -3,239 +3,301 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Wielki Turniej Kuponów</title>
-    <link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@300;400;600&family=Playfair+Display:ital,wght@0,700;1,700&display=swap" rel="stylesheet">
-    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.6.0/dist/confetti.browser.min.js"></script>
+    <title>Vanessa Gazda | Aktorka | Lektorka | Coach</title>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
     <style>
         :root {
-            --primary: #d4a373;
-            --bg-color: #fefae0;
-            --card-bg: rgba(255, 255, 255, 0.8);
-            --text-dark: #606c38;
-            --accent: #bc6c25;
+            --bg-color: #0f0f0f;
+            --text-color: #ffffff;
+            --accent-color: #c5a059; /* Zgaszone złoto */
+            --secondary-bg: #1a1a1a;
+            --transition: all 0.3s ease;
         }
 
-        * { box-sizing: border-box; margin: 0; padding: 0; }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Inter', -apple-system, BlinkMacSystemFont, sans-serif;
+        }
 
         body {
-            font-family: 'Montserrat', sans-serif;
-            background: linear-gradient(135deg, #fefae0 0%, #faedcd 100%);
-            color: var(--text-dark);
-            min-height: 100vh;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            justify-content: center;
-            padding: 20px;
+            background-color: var(--bg-color);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
         }
 
-        header { text-align: center; margin-bottom: 30px; }
-        h1 { font-family: 'Playfair Display', serif; color: var(--accent); font-size: 2.2rem; margin-bottom: 10px; }
-        .step-info { font-weight: 600; text-transform: uppercase; letter-spacing: 2px; color: #a98467; margin-bottom: 20px; }
-
-        .game-container {
+        /* Navigation */
+        nav {
+            padding: 2rem;
             display: flex;
-            gap: 20px;
+            justify-content: space-between;
+            align-items: center;
+            position: fixed;
             width: 100%;
-            max-width: 800px;
-            justify-content: center;
-            perspective: 1000px;
+            z-index: 1000;
+            background: linear-gradient(to bottom, rgba(15,15,15,0.9), transparent);
         }
 
-        .coupon-card {
-            background: var(--card-bg);
-            backdrop-filter: blur(10px);
-            border: 2px solid white;
-            border-radius: 25px;
-            padding: 40px 20px;
-            width: 300px;
-            text-align: center;
-            cursor: pointer;
-            transition: all 0.4s cubic-bezier(0.175, 0.885, 0.32, 1.275);
-            box-shadow: 0 10px 20px rgba(0,0,0,0.05);
+        .logo {
+            font-weight: 700;
+            letter-spacing: 2px;
+            text-transform: uppercase;
+            font-size: 1.2rem;
+        }
+
+        /* Hero Section */
+        header {
+            height: 100vh;
             display: flex;
-            flex-direction: column;
             align-items: center;
-            position: relative;
-        }
-
-        .coupon-card:hover {
-            transform: scale(1.05);
-            border-color: var(--accent);
-            box-shadow: 0 15px 30px rgba(0,0,0,0.1);
-        }
-
-        .vs {
-            align-self: center;
-            font-family: 'Playfair Display', serif;
-            font-size: 2rem;
-            font-weight: bold;
-            font-style: italic;
-            color: var(--accent);
-        }
-
-        .icon { font-size: 4rem; margin-bottom: 20px; }
-        h3 { font-family: 'Playfair Display', serif; margin-bottom: 15px; font-size: 1.5rem; }
-        p { font-size: 0.9rem; line-height: 1.5; color: #555; }
-
-        /* Final Winner Style */
-        .winner-screen {
-            display: none;
+            justify-content: center;
             text-align: center;
-            animation: fadeIn 1s ease;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('miejsce-na-twoje-zdjecie.jpg'); /* Tu dodasz Headshot */
+            background-size: cover;
+            background-position: center;
         }
 
-        @keyframes fadeIn { from { opacity: 0; } to { opacity: 1; } }
-
-        .winner-card {
-            background: white;
-            padding: 50px;
-            border-radius: 30px;
-            border: 4px solid var(--accent);
-            box-shadow: 0 20px 50px rgba(0,0,0,0.1);
+        .hero-content h1 {
+            font-size: clamp(3rem, 8vw, 5rem);
+            font-weight: 200;
+            margin-bottom: 1rem;
+            text-transform: uppercase;
         }
 
-        @media (max-width: 650px) {
-            .game-container { flex-direction: column; align-items: center; }
-            .vs { margin: 10px 0; }
+        .tagline {
+            font-size: 1.1rem;
+            letter-spacing: 3px;
+            color: var(--accent-color);
+            margin-bottom: 2rem;
+        }
+
+        /* Buttons */
+        .btn {
+            padding: 1rem 2.5rem;
+            border: 1px solid var(--text-color);
+            color: var(--text-color);
+            text-decoration: none;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            font-size: 0.8rem;
+            transition: var(--transition);
+            display: inline-block;
+        }
+
+        .btn:hover {
+            background-color: var(--text-color);
+            color: var(--bg-color);
+        }
+
+        .btn-gold {
+            border-color: var(--accent-color);
+            color: var(--accent-color);
+        }
+
+        /* Section Styling */
+        section {
+            padding: 100px 10%;
+        }
+
+        h2 {
+            font-size: 2rem;
+            margin-bottom: 3rem;
+            text-transform: uppercase;
+            letter-spacing: 4px;
+            border-bottom: 1px solid #333;
+            padding-bottom: 10px;
+        }
+
+        /* Showreel */
+        .video-container {
+            position: relative;
+            padding-bottom: 56.25%;
+            height: 0;
+            margin-bottom: 2rem;
+        }
+
+        .video-container iframe {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            border: none;
+        }
+
+        /* Experience Grid */
+        .grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 2rem;
+        }
+
+        .card {
+            background: var(--secondary-bg);
+            padding: 2rem;
+            border-radius: 4px;
+        }
+
+        .card h3 {
+            color: var(--accent-color);
+            margin-bottom: 1rem;
+        }
+
+        .card ul {
+            list-style: none;
+        }
+
+        .card li {
+            margin-bottom: 0.5rem;
+            opacity: 0.8;
+        }
+
+        /* Gallery Placeholder */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 1rem;
+        }
+
+        .photo-placeholder {
+            aspect-ratio: 2/3;
+            background: #222;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: #444;
+        }
+
+        /* Footer */
+        footer {
+            padding: 50px 10%;
+            background: #050505;
+            text-align: center;
+        }
+
+        .social-links {
+            margin-bottom: 2rem;
+        }
+
+        .social-links a {
+            color: var(--text-color);
+            font-size: 1.5rem;
+            margin: 0 15px;
+            transition: var(--transition);
+        }
+
+        .social-links a:hover {
+            color: var(--accent-color);
+        }
+
+        @media (max-width: 768px) {
+            .gallery-grid { grid-template-columns: 1fr; }
+            section { padding: 60px 5%; }
         }
     </style>
 </head>
 <body>
 
-    <div id="game-ui">
-        <header>
-            <div class="step-info" id="progress">Runda 1 / 5</div>
-            <h1>Który kupon wybierasz?</h1>
-        </header>
+    <nav>
+        <div class="logo">Vanessa Gazda</div>
+        <div><a href="#kontakt" class="btn" style="padding: 0.5rem 1rem; font-size: 0.7rem;">Kontakt</a></div>
+    </nav>
 
-        <div class="game-container">
-            <div id="card-left" class="coupon-card" onclick="select(0)">
-                </div>
-            
-            <div class="vs">vs</div>
-
-            <div id="card-right" class="coupon-card" onclick="select(1)">
-                </div>
-        </div>
-    </div>
-
-    <div id="winner-ui" class="winner-screen">
     <header>
-        <p class="step-info">Wybór dokonany!</p>
-        <h1>Twój prezent został zarezerwowany:</h1>
+        <div class="hero-content">
+            <h1>Vanessa Gazda</h1>
+            <p class="tagline">Aktorka dramatyczna | Absolwentka AT w Krakowie | Taniec towarzyski</p>
+            <a href="#showreel" class="btn">Zobacz Showreel</a>
+        </div>
     </header>
-    <div id="final-card-container" class="winner-card"></div>
-    <p style="margin-top: 30px; font-style: italic; font-weight: 600; color: #bc6c25;">
-        ✨ Szykuj się, będzie wspaniale! ✨
-    </p>
-    </div>
+
+    <section id="showreel">
+        <h2>Showreel</h2>
+        <div class="video-container">
+            <iframe src="https://www.youtube.com/embed/Twoje_ID_Wideo" allowfullscreen></iframe>
+        </div>
+    </section>
+
+    <section id="doświadczenie">
+        <div class="grid">
+            <div class="card">
+                <h3><i class="fas fa-film"></i> Aktorka</h3>
+                <ul>
+                    <li><strong>Film 1</strong> (Tytuł wkrótce)</li>
+                    <li><strong>Film 2</strong> (Tytuł wkrótce)</li>
+                    <li><strong>Film 3</strong> (Tytuł wkrótce)</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-microphone"></i> Lektorka</h3>
+                <p>Audiodeskrypcja:</p>
+                <ul>
+                    <li>Wiedźmin</li>
+                    <li>Wzgórze Psów</li>
+                    <li>Aplikacja "Modlitwa w drodze"</li>
+                </ul>
+            </div>
+
+            <div class="card">
+                <h3><i class="fas fa-heart"></i> Coach</h3>
+                <p>Prowadzę zajęcia grupowe dla kobiet oraz sesje 1:1 online dla osób w procesie zmiany.</p>
+                <br>
+                <a href="#" class="btn btn-gold" style="font-size: 0.7rem; padding: 0.6rem 1rem;">Zapisz się na sesję</a>
+            </div>
+        </div>
+    </section>
+
+    <section id="galeria">
+        <h2>Galeria</h2>
+        <div class="gallery-grid">
+            <div class="photo-placeholder">Headshot 1</div>
+            <div class="photo-placeholder">Sylwetka</div>
+            <div class="photo-placeholder">Still filmowy</div>
+        </div>
+    </section>
+
+    <section id="cv" style="background-color: var(--secondary-bg);">
+        <h2>Resume</h2>
+        <div class="grid">
+            <div>
+                <h3>Dane fizyczne</h3>
+                <p>Wzrost: --- cm<br>Oczy: ---<br>Włosy: ---</p>
+            </div>
+            <div>
+                <h3>Umiejętności</h3>
+                <p>Taniec towarzyski, Szermierka, Prawo jazdy, Języki (angielski - poziom...)</p>
+            </div>
+        </div>
+        <br><br>
+        <center><a href="#" class="btn"><i class="fas fa-download"></i> Pobierz CV (PDF)</a></center>
+    </section>
+
+    <footer id="kontakt">
+        <h2>Kontakt</h2>
+        <p>Agent: [Dane agenta zostaną dodane]</p>
+        <p>Email: <a href="mailto:vanessa.gazda7@gmail.com" style="color: var(--accent-color); text-decoration: none;">vanessa.gazda7@gmail.com</a></p>
+        <br><br>
+        <div class="social-links">
+            <a href="https://www.instagram.com/vanessence_act" target="_blank"><i class="fab fa-instagram"></i></a>
+            <a href="#"><i class="fab fa-vimeo-v"></i></a>
+            <a href="#"><i class="fab fa-linkedin-in"></i></a>
+        </div>
+        <p style="font-size: 0.7rem; opacity: 0.5;">&copy; 2024 Vanessa Gazda. All rights reserved.</p>
+    </footer>
 
     <script>
-        const allCoupons = [
-            { title: "Masaż stóp", icon: "💆‍♀️", desc: "30 minut relaksu przy Twojej ulubionej muzyce." },
-            { title: "Domowa Kolacja", icon: "🍝", desc: "Twoje ulubione danie, świece i zero Twojego sprzątania." },
-            { title: "Królewskie Zamówienie", icon: "🍱", desc: "Wybierasz dowolną kuchnię świata, a ja zajmuję się zamówieniem, odbiorem i oprawą wieczoru!" },
-            { title: "Wieczór w Kinie", icon: "🍿", desc: "Wybierasz dowolny film, nawet jeśli to najdłuższy romans." },
-            { title: "Dzień na TAK", icon: "✅", desc: "Przez całe 24 godziny nie mogę Ci odmówić niczego!" },
-            { title: "Spacer i Deser", icon: "🍰", desc: "Wyjście do ulubionej kawiarni na największe ciastko w menu." }
-        ];
-        
-        let pool = [...allCoupons].sort(() => Math.random() - 0.5);
-        let currentWinner = pool[0];
-        let nextIndex = 1;
-        let totalRounds = allCoupons.length - 1;
-        let currentRound = 1;
-        
-        function init() {
-            // Sprawdź, czy już grała
-            const savedWinner = localStorage.getItem('celebratedWinner');
-            if (savedWinner) {
-                const winnerData = allCoupons.find(c => c.title === savedWinner);
-                showWinner(winnerData, false); // Pokaż ekran końcowy bez ponownego wysyłania do Google
+        // Prosty efekt scrolla dla nawigacji
+        window.addEventListener('scroll', function() {
+            const nav = document.querySelector('nav');
+            if (window.scrollY > 50) {
+                nav.style.background = 'rgba(15, 15, 15, 0.95)';
             } else {
-                updateUI();
+                nav.style.background = 'linear-gradient(to bottom, rgba(15,15,15,0.9), transparent)';
             }
-        }
-        
-        function updateUI() {
-            if (currentRound > totalRounds) {
-                showWinner(currentWinner, true); // Pierwsza wygrana - wyślij do Google
-                return;
-            }
-        
-            document.getElementById('progress').innerText = `Pojedynek ${currentRound} / ${totalRounds}`;
-            const nextChallenger = pool[nextIndex];
-        
-            renderCard('card-left', currentWinner);
-            renderCard('card-right', nextChallenger);
-        }
-        
-        function renderCard(elementId, data) {
-            const el = document.getElementById(elementId);
-            el.style.opacity = 0;
-            setTimeout(() => {
-                el.innerHTML = `
-                    <div class="icon">${data.icon}</div>
-                    <h3>${data.title}</h3>
-                    <p>${data.desc}</p>
-                `;
-                el.style.opacity = 1;
-            }, 200);
-        }
-        
-        function select(side) {
-            if (side === 1) currentWinner = pool[nextIndex];
-            nextIndex++;
-            currentRound++;
-            
-            confetti({
-                particleCount: 40,
-                spread: 50,
-                origin: { y: 0.8 },
-                colors: ['#bc6c25', '#fefae0']
-            });
-        
-            updateUI();
-        }
-        
-        function showWinner(winner, shouldSubmit) {
-            document.getElementById('game-ui').style.display = 'none';
-            const winnerUI = document.getElementById('winner-ui');
-            winnerUI.style.display = 'block';
-            
-            document.getElementById('final-card-container').innerHTML = `
-                <div class="icon" style="font-size: 6rem;">${winner.icon}</div>
-                <h2 style="font-family: 'Playfair Display', serif; font-size: 2.5rem; margin-bottom: 10px;">${winner.title}</h2>
-                <p style="font-size: 1.2rem;">${winner.desc}</p>
-            `;
-        
-            if (shouldSubmit) {
-                // Zapisz w przeglądarce, żeby nie mogła zagrać drugi raz
-                localStorage.setItem('celebratedWinner', winner.title);
-        
-                // Wyślij do Google Sheets (pamiętaj o podpięciu URL!)
-                const scriptURL = "https://script.google.com/macros/s/AKfycbw0W6Xbs4N4loS5WtUHz8UkEUz5uCIyhLhY6RTUx1Oq6fU-a7frTkQn5iiXUD1DBPU/exec"; 
-                fetch(scriptURL, {
-                    method: 'POST',
-                    mode: 'no-cors',
-                    headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify({ prezent: winner.title })
-                });
-            }
-        
-            // Wielkie konfetti
-            const duration = 4 * 1000;
-            const end = Date.now() + duration;
-            (function frame() {
-                confetti({ particleCount: 5, angle: 60, spread: 55, origin: { x: 0 }, colors: ['#bc6c25', '#d4a373'] });
-                confetti({ particleCount: 5, angle: 120, spread: 55, origin: { x: 1 }, colors: ['#bc6c25', '#d4a373'] });
-                if (Date.now() < end) requestAnimationFrame(frame);
-            }());
-        }
-        
-        // Start gry
-        init();
+        });
     </script>
 </body>
 </html>
